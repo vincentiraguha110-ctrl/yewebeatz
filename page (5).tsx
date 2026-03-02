@@ -1,0 +1,1 @@
+export default function Page(){return (<div className='grid gap-4'><h1 className='text-2xl font-semibold'>About</h1><p className='text-white/70'>YeweBeatz — producer & songwriter. Add your bio here.</p></div>);}

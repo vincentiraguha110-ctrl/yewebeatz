@@ -1,0 +1,42 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  status        String   // PENDING | PAID | FAILED
+  provider      String   // STRIPE | MOMO
+  providerRef   String?
+  currency      String   @default("RWF")
+  amount        Int      // stored as integer RWF (Stripe RWF is zero-decimal)
+  buyerName     String?
+  buyerEmail    String?
+  licensePdfUrl String?  // stored as "s3key:<key>" (private), presigned at runtime
+
+  items         OrderItem[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model OrderItem {
+  id           String @id @default(cuid())
+  orderId      String
+  order        Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  itemType     String // TRACK | SOUND_KIT | MERCH | MEMBERSHIP
+  itemId       String // e.g. T10036
+  title        String
+  price        Int    // integer RWF
+
+  licenseType  String?
+  deliverables String?  // "MP3,WAV,STEMS"
+  usageLimits  String?  // JSON string
+
+  createdAt    DateTime @default(now())
+}

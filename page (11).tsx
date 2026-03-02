@@ -1,0 +1,1 @@
+export default function Page(){return (<div className='grid gap-4'><h1 className='text-2xl font-semibold'>Account</h1><p className='text-white/70'>Login/purchases/membership status goes here.</p></div>);}
